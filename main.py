@@ -3,6 +3,7 @@ import random
 import re
 import os
 import csv
+import colorama
 
 def login1P():
   """Authenticates the player before they play against the CPU."""
@@ -63,11 +64,40 @@ def login2P():
     file.close()
     login1P()
 
-def mainmenu():
-  choice = int(input("1) 1 Player\n2) 2 Players "))
+def mainmenu2():
+  choice = int(input("1) 1 Player\n2) 2 Players\nChoice:  "))
   if choice == 1:
     menu1p()
+  elif choice == 2:
+    #menu2p()
+    print("\033[1;31;1mWIP")
+
+
+def menu1p():
+  choice1 = int(input("1) Play Against CPU\n2) View Leaderboard\n3) Exit to Main Menu\n4) Exit Game\nChoice: "))
+  while choice1 < 1 or choice1 > 4:
+    choice1 = input("Invalid input! ")
+  if choice1 == 1:
+    #game1p()
+    print("WIP")
+  elif choice1 == 2:
+    #Leaderboard
+    print("WIP")
+  elif choice1 == 3:
+    mainmenu2()
+  elif choice1 == 4:
+    exit()
+  
+
+def mainmenu():
+  choice = int(input("1) 1 Player\n2) 2 Players\nChoice:  "))
+  if choice == 1:
+    menu1p()
+  elif choice == 2:
+    #menu2p()
+    print("\033[1;31;1mWIP")
 
 mainmenu()
+
 
 
