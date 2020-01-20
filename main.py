@@ -63,3 +63,11 @@ def login2P():
     file.close()
     login1P()
 
+def mainmenu():
+  choice = int(input("1) 1 Player\n2) 2 Players "))
+  if choice == 1:
+    menu1p()
+
+mainmenu()
+
+
