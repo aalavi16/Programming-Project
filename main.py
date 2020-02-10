@@ -3,7 +3,6 @@ import random
 import re
 import os
 import csv
-import colorama
 
 def login1P():
   """Authenticates the player before they play against the CPU."""
@@ -97,7 +96,10 @@ def mainmenu():
     #menu2p()
     print("\033[1;31;1mWIP")
 
+
+import login
 mainmenu()
+
 
 
 
