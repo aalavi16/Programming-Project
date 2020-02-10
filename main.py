@@ -73,13 +73,13 @@ def login():
       print('Failed to sign in. Please try again') 
       loginA = loginA + 1
       login()
-    elif loggedin1 == False and loginA == 3:
-      print("You have had too many attempts")
-      time.sleep(1)
-      print("Please try again later")
-      time.sleep(1)
-      print("Goodbye")
-      exit()
+    #elif loggedin1 == False and loginA == 3:
+    #  print("You have had too many attempts")
+     # time.sleep(1)
+      #print("Please try again later")
+      #time.sleep(1)
+     # print("Goodbye")
+     # exit()
 
 def login2P():
   global username
@@ -94,22 +94,20 @@ def login2P():
       usernameF = row[0]
       passwordF = row[1]
       if (usernameF == username and passwordF == password):
-        loggedin1 = True
+        loggedin2 = True
         print("Welcome " + username + "!")
         time.sleep(1)
-        if multiplayer == True:
-          login2P()
     if loggedin2 == False and loginA<4:
       print('Failed to sign in. Please try again') 
       loginA = loginA + 1
       login()
-    elif loggedin2 == False and loginA == 3:
-      print("You have had too many attempts")
-      time.sleep(1)
-      print("Please try again later")
-      time.sleep(1)
-      print("Goodbye")
-      exit()
+    #elif loggedin2 == False and loginA == 3:
+      #print("You have had too many attempts")
+      #time.sleep(1)
+      #print("Please try again later")
+     # time.sleep(1)
+    #  print("Goodbye")
+   #   exit()
 
 def menu1pb():
   choice1 = int(input("1) Play Against CPU\n2) View Leaderboard\n3) Exit to Main Menu\n4) Exit Game\nChoice: "))
@@ -170,10 +168,54 @@ def register():
   reg.close() #closes the file.
   login1P()
 
+def resultsRound():
+  if point1 == 1:
+    print("Unlucky. (2)")
+  elif point1 == 2:
+    print("Meh. (2)")
+  elif point1 == 3:
+    print("OK. (3)")
+  elif point1 == 4:
+    print("Decent! (4)")
+  elif point1 == 5:
+    print("Pretty good! (5)")
+  elif point1 == 6:
+    print("PERFECT SCORE! (6)")
 
 
-mainmenu()
+
+def game():
+  """Player One Game"""
+  global player1Total
+  global cpuTotal
+  global point1
+  global point2
+  player1Total = 0
+  cpuTotal = 0
+  round = 1
+  print("ROUND" , round)
+  print("PLAYER TURN")
+  #rollChoice = ("Do you want to:\nplay it safe (spin)\nor take a risk (roll)? ")
+  input("Press enter to roll the die ")
+  time.sleep(1)
+  point1 = random.randint(1,6)
+  resultsRound()
+  player1Total += point1
+  print("CPU TURN")
+  time.sleep(1)
+  cpupoint1 = random.randint(1,6)
+  print("The CPU got" , cpupoint1)
+  cpuTotal += cpupoint1
+  print("PLAYER TURN")
+  rollChoice = ("Do you want to:\n1) play it safe (spin)\nor\n2) take a risk (roll)? ")
+  if rollChoice == 1:
+    lowerBound = point1 - 2
+    upperBound = point1 + 2
+    point2 = random.randint(lowerBound,upperBound)
 
 
 
+  
 
+#testing purposes
+game()
