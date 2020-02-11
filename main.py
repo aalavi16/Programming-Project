@@ -1,11 +1,17 @@
-import time
+from time import sleep
 import random
 import re
 import os
 import csv
 global multiplayer
 multiplayer = False
-
+global player1Total
+global cpuTotal
+global point1
+global point2
+global point
+global round
+global roll
 
 
 def game():
@@ -66,7 +72,7 @@ def login():
       if (usernameF == username and passwordF == password):
         loggedin1 = True
         print("Welcome " + username + "!")
-        time.sleep(1)
+        sleep(1)
         if multiplayer == True:
           login2P()
     if loggedin1 == False and loginA<4:
@@ -75,9 +81,9 @@ def login():
       login()
     #elif loggedin1 == False and loginA == 3:
     #  print("You have had too many attempts")
-     # time.sleep(1)
+     # sleep(1)
       #print("Please try again later")
-      #time.sleep(1)
+      #sleep(1)
      # print("Goodbye")
      # exit()
 
@@ -96,16 +102,16 @@ def login2P():
       if (usernameF == username and passwordF == password):
         loggedin2 = True
         print("Welcome " + username + "!")
-        time.sleep(1)
+        sleep(1)
     if loggedin2 == False and loginA<4:
       print('Failed to sign in. Please try again') 
       loginA = loginA + 1
       login()
     #elif loggedin2 == False and loginA == 3:
       #print("You have had too many attempts")
-      #time.sleep(1)
+      #sleep(1)
       #print("Please try again later")
-     # time.sleep(1)
+     # sleep(1)
     #  print("Goodbye")
    #   exit()
 
@@ -151,36 +157,41 @@ def register():
 
   print("Welcome to the registration screen!")
   print("Please enter your chosen username and password")
-  time.sleep(1)
+  sleep(1)
   username = input("Please choose your username: ")
-  time.sleep(1)
+  sleep(1)
   password = input("Please choose your password: ")
-  time.sleep(1)
+  sleep(1)
   row = [username, password] #creates a row to store the details
   reg = open("UsernamePassword.csv", "a", newline = '')#opens the files to save the details
   csvwriter = csv.writer(reg) #tells the program how to write (save) to the file
   csvwriter.writerow(row) #tells the program how to write to the file
   #csvwriter.writerow("")
   print("Welcome " + username + ". You have successfully registered")
-  time.sleep(1)
+  sleep(1)
   print("Please login now")
-  time.sleep(1)
+  sleep(1)
   reg.close() #closes the file.
   login1P()
 
-def resultsRound():
-  if point1 == 1:
-    print("Unlucky. (2)")
-  elif point1 == 2:
-    print("Meh. (2)")
-  elif point1 == 3:
-    print("OK. (3)")
-  elif point1 == 4:
-    print("Decent! (4)")
-  elif point1 == 5:
-    print("Pretty good! (5)")
-  elif point1 == 6:
-    print("PERFECT SCORE! (6)")
+
+
+
+
+#def resultsRound():
+
+ # if point == 1:
+  #  print("Unlucky. (2)")
+  #elif point == 2:
+  #  print("Meh. (2)")
+  #elif point == 3:
+  #  print("OK. (3)")
+  #elif point == 4:
+  #  print("Decent! (4)")
+  #elif point == 5:
+  #  print("Pretty good! (5)")
+  #elif point == 6:
+  #  print("PERFECT SCORE! (6)")
 
 
 
@@ -190,28 +201,55 @@ def game():
   global cpuTotal
   global point1
   global point2
+  global point
+  global round
+  global roll
   player1Total = 0
   cpuTotal = 0
   round = 1
+  roll = 1
   print("ROUND" , round)
   print("PLAYER TURN")
   #rollChoice = ("Do you want to:\nplay it safe (spin)\nor take a risk (roll)? ")
   input("Press enter to roll the die ")
-  time.sleep(1)
+  sleep(1)
   point1 = random.randint(1,6)
   resultsRound()
   player1Total += point1
+  point = 1
+  point1 = point
   print("CPU TURN")
-  time.sleep(1)
+  sleep(1)
   cpupoint1 = random.randint(1,6)
   print("The CPU got" , cpupoint1)
   cpuTotal += cpupoint1
   print("PLAYER TURN")
+  roll = 2
   rollChoice = ("Do you want to:\n1) play it safe (spin)\nor\n2) take a risk (roll)? ")
   if rollChoice == 1:
     lowerBound = point1 - 2
     upperBound = point1 + 2
     point2 = random.randint(lowerBound,upperBound)
+    if point2 == 6:
+      point2 = random.randint(4,5)
+    else:
+      point2 = point
+      if point == 1:
+        print("Unlucky. (2)")
+      elif point == 2:
+        print("Meh. (2)")
+      elif point == 3:
+        print("OK. (3)")
+      elif point == 4:
+        print("Decent! (4)")
+      elif point == 5:
+        print("Pretty good! (5)")
+      elif point == 6:
+        print("PERFECT SCORE! (6)")
+
+
+
+
 
 
 
@@ -219,3 +257,5 @@ def game():
 
 #testing purposes
 game()
+
+
