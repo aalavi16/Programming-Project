@@ -23,7 +23,7 @@ def login1P():
   with open('UsernamePassword.csv', newline='') as csvfile:
     loginReader = csv.reader(csvfile, delimiter=',', quotechar='|')
     loggedinplayer1 = False
-    
+
     for row2 in loginReader:
       if row2[0] == username:
         if row2[1]  == password:
@@ -76,7 +76,7 @@ def login():
         if multiplayer == True:
           login2P()
     if loggedin1 == False and loginA<4:
-      print('Failed to sign in. Please try again') 
+      print('Failed to sign in. Please try again')
       loginA = loginA + 1
       login()
     #elif loggedin1 == False and loginA == 3:
@@ -104,7 +104,7 @@ def login2P():
         print("Welcome " + username + "!")
         sleep(1)
     if loggedin2 == False and loginA<4:
-      print('Failed to sign in. Please try again') 
+      print('Failed to sign in. Please try again')
       loginA = loginA + 1
       login()
     #elif loggedin2 == False and loginA == 3:
@@ -129,7 +129,7 @@ def menu1pb():
     mainmenu()
   elif choice1 == 4:
     exit()
-  
+
 def menu1pa():
 
   choice = int(input("Do you want to:\n1) Login\n2) Register "))
@@ -140,7 +140,7 @@ def menu1pa():
   else:
     print("Invalid input!")
     menu1pa()
-  
+
 
 def mainmenu():
   global multiplayer
@@ -246,6 +246,7 @@ def game():
         print("Pretty good! (5)")
       elif point == 6:
         print("PERFECT SCORE! (6)")
+    print("Test")
 
 
 
@@ -253,9 +254,7 @@ def game():
 
 
 
-  
+
 
 #testing purposes
 game()
-
-
