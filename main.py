@@ -1,8 +1,7 @@
 from time import sleep
 import random
-import re
-import os
 import csv
+import os 
 global multiplayer
 multiplayer = False
 global player1Total
@@ -24,9 +23,32 @@ highscore = 0
 username = ''
 life = 3
 loginA = 0
+def viewLeaderboard():
+  see = open("highscores.csv","r")
+  highscores = csv.reader(see,delimiter=',')
+  count = 0
+  i = 0
+  highscores1 = []
+  usernames2 = []
+  highscores3 = []
+  for row in highscores:
+    highscores1.append([row[0],row[1]])
+    i = i + 1
+    usernames2.append(row[0])
+    highscores3.append(row[1])
+  highScores2 = sorted(highscores1, key=lambda data:data[1])
+  print(highScores2)
+  zipScores = zip(usernames2, highscores3)
+  highscoresdict = dict(zipScores)
+  print(highscoresdict)
+  menu1pb()
+  #could create a dictionary instead with key value pairs for username / score respectively
+
+
 def login():
   global round
-
+  global username
+  global password
   check = open('UsernamePassword.csv','r')
   database = csv.reader(check,delimiter=',')
   loggedin1 = False
@@ -38,21 +60,24 @@ def login():
       passwordF = row[1]
       if (usernameF == username and passwordF == password):
         loggedin1 = True
-        print("Welcome " + username + "!")
+        break
+        
 
-        if multiplayer == True:
-          login2P()
+
     if loggedin1 == False and loginA<4:
       print('Failed to sign in. Please try again') 
       #loginA = loginA + 1
       login()
     elif loggedin1 == True:
+      print("Welcome " + username + "!")
       sleep(1)
       round = 1
       
-      
-      
-      game()
+      if multiplayer == True:
+        login2P()
+      else:
+        menu1pb()
+      #game()
     #elif loggedin1 == False and loginA == 3:
     #  print("You have had too many attempts")
      # sleep(1)
@@ -62,18 +87,18 @@ def login():
      # exit()
 
 def login2P():
-  global username
+  global username2
   global loginA
   check = open('UsernamePassword.csv','r')
   database = csv.reader(check,delimiter=',')
   loggedin2 = False
   while loggedin2==False:
-    username = input("Please enter your username, player 2: ")
-    password = input("Please enter your password, player 2: ")
+    username2 = input("Please enter your username, player 2: ")
+    password2 = input("Please enter your password, player 2: ")
     for row in database:
       usernameF = row[0]
       passwordF = row[1]
-      if (usernameF == username and passwordF == password):
+      if (usernameF == username2 and passwordF == password2):
         loggedin2 = True
         print("Welcome " + username + "!")
         sleep(1)
@@ -90,33 +115,45 @@ def login2P():
    #   exit()
 
 def menu1pb():
-  choice1 = int(input("1) Play Against CPU\n2) View Leaderboard\n3) Exit to Main Menu\n4) Exit Game\nChoice: "))
+  global round
+  while True:
+    try:
+      choice1 = int(input("1) Play Against CPU\n2) View Leaderboard\n3) Exit to Main Menu\n4) Exit Game\nChoice: "))
+    except ValueError:
+      print("Try again!")
+      continue
+    else:
+      break
   while choice1 < 1 or choice1 > 4:
     choice1 = input("Invalid input! ")
   if choice1 == 1:
-    #game1p()
-    print("WIP")
+    round = 1
+    sleep(0.5)
+    #print("\033[2J")
+    os.system("clear")
+    game()
   elif choice1 == 2:
     #Leaderboard
-    print("WIP")
+    viewLeaderboard()
   elif choice1 == 3:
     mainmenu()
   elif choice1 == 4:
     exit()
   
 def menu1pa():
+  """2nd menu asking whether to login or register."""
   while True:
     try:
-      choice = int(input("Do you want to:\n1) Login\n2) Register\nChoice: "))
+      choicep1 = int(input("Do you want to:\n1) Login\n2) Register\nChoice: "))
     except ValueError:
       print("Try again!")
       continue
     else:
       break
   
-  if choice == 1:
+  if choicep1 == 1:
     login()
-  elif choice == 2:
+  elif choicep1 == 2:
     register()
   else:
     print("Invalid input!")
@@ -138,9 +175,10 @@ def mainmenu():
   if choice == 1:
     menu1pa()
   elif choice == 2:
-    #menu2p()
+    #menu2pa()
     print("\033[1;31;1mWIP")
     multiplayer = True
+    #mainmenu()
 
 
 
@@ -173,12 +211,12 @@ def finalResults():
   global cpuFinalTotal
   global round
   print("\n")
-  print("\033[0;31;1mFINAL RESULTS!")
-  if draws >= 3:
+  print("\033[0;31;1mPRESS ENTER TO VIEW FINAL RESULTS!")
+  if draws >= 3 or cpuWins == playerWins:
     print("\033[0;31;1mNO-ONE WINS!")
-  elif cpuWins >= 3:
+  elif cpuWins >= 3 or (draws < 3 and cpuWins > playerWins):
     print("\033[0;33;1mBETTER LUCK NEXT TIME. THE CHAMPION IS THE CPU!")
-  elif playerWins >= 3:
+  elif playerWins >= 3 or (draws < 3 and playerWins > cpuWins):
     print("\033[0;34;1mYAY! YOU WIN!")
   print("\n")
   print("\033[0;34;1mYour final total is" , p1FinalTotal)
@@ -191,6 +229,15 @@ def finalResults():
   print("\n")
   print("\033[0;31;1mYou drew " + str(draws) + " time(s).")
   print("\n")
+  choice = input("Do you want to save your score? ")
+  if choice == "Yes":
+    row = [username, p1FinalTotal] #creates a row to store the details
+    save = open("highscores.csv", "a", newline = '')#opens the files to save the details
+    csvwriter = csv.writer(save) #tells the program how to write (save) to the file
+    csvwriter.writerow(row) #tells the program how to write to the file
+    save.close()
+
+
   choice12 = input("Do you want to play again? ")
   if choice12 == "Yes":
     round = 1
@@ -199,7 +246,8 @@ def finalResults():
     draws = 0
     p1FinalTotal = 0
     cpuFinalTotal = 0
-    print("\033[2J")
+    #print("\033[2J")
+    os.system("clear") #clear screen
     game()
   else:
     exit()
@@ -248,6 +296,7 @@ def game():
   roll = 1
   print("\n")
   print("\033[0;31;1mROUND" , round)
+  sleep(1)
   print("\n")
   print("\033[0;34;1mPLAYER TURN")
   #rollChoice = ("Do you want to:\nplay it safe (spin)\nor take a risk (roll)? ")
@@ -278,7 +327,7 @@ def game():
   resultsRoll()
   if point1 == point2:
     print("\n")
-    print("You got two of the same in a row!")
+    print("YOU GOT TWO OF THE SAME IN A ROW!")
     print("\033[0;34;1mPLAYER TURN 3!")
     input("Press enter to roll the die (Bonus Roll)")
     roll = 3
@@ -296,7 +345,7 @@ def game():
   print("Their total is" , cpuTotal)
   if cpupoint1 == cpupoint2:
     print("\n")
-    print("The CPU got two of the same numbers in a row!")
+    print("THE CPU GOT TWO OF THE SAME NUMBERS IN A ROW!")
     sleep(0.5)
     print("\033[0;33;1mCPU TURN 3!")
     cpuroll = 3
@@ -307,7 +356,7 @@ def game():
     print("Their total is" , cpuTotal)
   print("\n")
   sleep(0.5)
-  print("\033[0;31;1mROUND RESULTS!")
+  input("\033[0;31;1mPRESS ENTER TO VIEW ROUND RESULTS!")
   sleep(0.5)
   print("\n")
   print("\033[0;34;1mPLAYER RESULTS:")
@@ -369,7 +418,7 @@ def game():
       game()
   
 
-          
+mainmenu()
 
 
 
@@ -379,6 +428,6 @@ def game():
   
 
 #testing purposes
-mainmenu()
+#viewLeaderboard()
 
 
